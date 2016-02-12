@@ -12,9 +12,13 @@ public class Main {
 	public static void main(String[] args) {
 
 		GridBuilder gridBuilder = new GridBuilder();
-		Grid grid = new Grid(gridBuilder.getNewSmallBasicGrid());
+		Grid grid = new Grid(gridBuilder.getNewSmallBasicGrid(), gridBuilder);
 		
-		Player player = new Player(new Point(1,4));
+		Player player = new Player(new Point(1,1));
+		
+		grid.addEnemy(new Ghost(new Point(4,3)));
+		grid.addEnemy(new Ghost(new Point(4,4)));
+		grid.addEnemy(new Ghost(new Point(4,5)));
 		
 		GridRenderer renderer = new GridRenderer(grid);
 		
@@ -49,35 +53,42 @@ public class Main {
 		int score = 0;
 		long speed = 800;
 		while (run) {
-			
-			
-			
-//			NodeState state = grid.setSnakePosition(snake.snakeNewMove(score, keyDirection));
-//			if(state.equals(NodeState.empty)){
-//				//Do nothing
-//			}else if(state.equals(NodeState.food)){
-//				score++;
-//				if(speed - 50 >= 50){
-//					speed -= 50;
-//				}
-//			}else if(state.equals(NodeState.snake)){
-//				run = false;
-//				continue;
-//			}
-			window.repaint();
-			try{
-			  Thread.sleep(speed);
-			}catch(InterruptedException ex){
-			  System.out.println("thread broke");
+//			System.out.println("running");
+			Point playerPoint = player.getCurrentPosition();
+			System.out.println(playerPoint);
+			NodeState state = grid.update(player.getNewPosition(keyDirection, new NodeOctet(grid.getGridLayout(), playerPoint.x, playerPoint.y)));
+//			System.out.println(state);
+			if(state.equals(NodeState.empty)){
+				//Do nothing
+			}else if(state.equals(NodeState.food)){
+				score++;
+			}else if(state.equals(NodeState.ghost)){
+				run = false;
+				window.repaint();
+				continue;
 			}
+			window.repaint();
+
+			sleep(speed/2);
+			
+			window.repaint();
+			
+			sleep(speed/2);
 		}
 		
 		if(!run){
 			System.out.println("END GAME");
-//			JOptionPane.showMessageDialog(window, "You lose! Your score is " + score);
-			JOptionPane.showMessageDialog(window, "End of game");
+			JOptionPane.showMessageDialog(window, "You lose! Your score is " + score);
+//			JOptionPane.showMessageDialog(window, "End of game");
 		}
 		System.exit(0);
 	}
 
+	public static void sleep(long time){
+		try{
+			 Thread.sleep(time);
+		}catch(InterruptedException ex){
+			 System.out.println("thread broke");
+		}
+	}
 }

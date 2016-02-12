@@ -14,4 +14,15 @@ public class GridBuilder {
 		};
 	}
 	
+	public NodeState[][] getNewOpenGrid(){
+		return new NodeState[][] {
+			{NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty},
+			{NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty},
+			{NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty},
+			{NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty},
+			{NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty},
+			{NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty,NodeState.empty},
+		};
+	}
+	
 }

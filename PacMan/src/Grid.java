@@ -6,28 +6,45 @@ import java.util.Random;
 
 public class Grid {
 
+	private NodeState[][] startingGridLayout;
 	private NodeState[][] gridLayout;
 	
-	private Point player;
 	private List<IEnemy> enemies;
 	
-	private int gridBoundsX;
-	private int gridBoundsY;
+	private GridBuilder gridBuilder;
 	
-	public Grid(NodeState[][] gridLayout){
+	public Grid(NodeState[][] gridLayout, GridBuilder gridBuilder){
 		enemies = new ArrayList<IEnemy>();
-		this.gridLayout = gridLayout;
-		gridBoundsX = gridLayout[0].length;
-		gridBoundsY = gridLayout[1].length;
+		this.startingGridLayout = gridLayout;
+		this.gridLayout = startingGridLayout;
+		this.gridBuilder = gridBuilder;
 	}
 	
 	/**
 	 * This method runs once per frame
 	 * It takes the player position and updates the enemies
 	 * @param player
+	 * @return the state that the player landed on
 	 */
-	public void update(Player player){
+	public NodeState update(Player player){
+		resetGridNodes();
+		setNodeState(player.getCurrentPosition(), NodeState.player);
+		for (IEnemy enemy : enemies) {
+			if(enemy.getCurrentPosition().equals(player.getCurrentPosition())){
+				return NodeState.ghost;
+			}
+			if(enemy.getNewPosition(new NodeOctet(gridLayout, enemy.getCurrentPosition().x, enemy.getCurrentPosition().y)).equals(player.getCurrentPosition())){
+				return NodeState.ghost;
+			}
+			setNodeState(enemy.getCurrentPosition(), NodeState.ghost);
+		}
 		
+		return getNodeState(player.getCurrentPosition());
+	}
+	
+	private void resetGridNodes(){
+//		gridLayout = startingGridLayout;
+		gridLayout = gridBuilder.getNewSmallBasicGrid();
 	}
 	
 	public void addEnemy(IEnemy enemy){
@@ -36,7 +53,7 @@ public class Grid {
 	
 	private boolean checkInsidegrid(Point point){
 		try{
-			getNodeState(point.x, point.y);
+			getNodeState(point);
 		} catch(IndexOutOfBoundsException ex){
 			return false;
 		}
@@ -47,11 +64,11 @@ public class Grid {
 		return gridLayout;
 	}
 	
-	private void setNodeState(int x, int y, NodeState state){
-		gridLayout[x][y] = state;
+	private void setNodeState(Point position, NodeState state){
+		gridLayout[position.x][position.y] = state;
 	}
 	
-	private NodeState getNodeState(int x, int y){
-		return gridLayout[x][y];
+	private NodeState getNodeState(Point position){
+		return gridLayout[position.x][position.y];
 	}
 }

@@ -12,7 +12,7 @@ public class GridRenderer extends JComponent {
 	
 	int border = 10;
 	
-	Grid grid;
+	private Grid grid;
 	
 	public GridRenderer(Grid grid){
 		super();
@@ -30,7 +30,7 @@ public class GridRenderer extends JComponent {
 //					g.drawOval( i + width + x , j + width + y , width , width ); 
 				}else if(nodes[i][j].equals(NodeState.ghost)){
 //					g.drawRect( i + width + x , j + width + y , width , width ); 
-//					g.drawOval( i + width + x , j + width + y , width , width ); 
+					g.drawOval( i + width + x , j + width + y , width , width ); 
 				}else if(nodes[i][j].equals(NodeState.player)){
 //					g.drawRect( i + width + x , j + width + y , width , width ); 
 					g.drawOval( i + width + x , j + width + y , width , width ); 

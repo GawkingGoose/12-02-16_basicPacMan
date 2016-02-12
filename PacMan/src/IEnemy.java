@@ -8,4 +8,5 @@ public interface IEnemy {
 	 */
 	public Point getNewPosition(NodeOctet octet);
 	
+	public Point getCurrentPosition();
 }
